@@ -1,23 +1,27 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+  <div class="container">
+    <headers :header-title= 'title'></headers>
+    <router-view></router-view>
   </div>
 </template>
-
 <script>
+import header from '@/components/header'
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    title: function () {
+      return this.$store.state.title
+    }
+  },
+  components: {
+    headers: header
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+    margin: 0;
+    padding: 0;
+  }
 </style>
