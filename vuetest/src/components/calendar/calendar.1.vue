@@ -1,4 +1,5 @@
 <template>
+  import func from './vue-temp/vue-editor-bridge';
   <div class="content">
     <ul class="data-tab">
       <li class="active">
@@ -22,7 +23,7 @@
     </ul>
 
     <ul class="calendar-list">
-      <li v-for="item in calendarList">
+      <!-- <li v-for="item in calendarList">
         <h3>{{item.title.month}}月
           <small>{{item.title.year}}年</small>
         </h3>
@@ -32,15 +33,11 @@
             <i class="holiday">{{d.holiday}}</i>
           </li>
           <li class="iv" v-else-if="d.class==='iv'">
-            <i class="date">{{d.date}}</i>
-            <i class="holiday">{{d.holiday}}</i>
-          </li>
-          <li class="jr" v-else="d.class==='jr'" @click="change">
-            <i class="date">{{d.date}}</i>
+            <i class="date">18</i>
             <i class="holiday">{{d.holiday}}</i>
           </li>
         </ul>
-      </li>
+      </li> -->
       <li>
         <h3>2月
           <small>2017年</small>
@@ -247,6 +244,134 @@
   </div>
 </template>
 <script>
+// var holidaysMap = [
+//   {
+//     name: "", //'今天',
+//     date: [util.formatDate(new Date())]
+//   },
+//   {
+//     name: "圣诞节",
+//     date: [
+//       "2014-12-25",
+//       "2015-12-25",
+//       "2016-12-25",
+//       "2017-12-25",
+//       "2018-12-25",
+//       "2019-12-25",
+//       "2020-12-25"
+//     ]
+//   },
+//   {
+//     name: "情人节",
+//     date: [
+//       "2015-02-14",
+//       "2016-02-14",
+//       "2017-02-14",
+//       "2018-02-14",
+//       "2019-02-14",
+//       "2020-02-14"
+//     ]
+//   },
+//   {
+//     name: "元旦",
+//     date: [
+//       "2015-01-01",
+//       "2016-01-01",
+//       "2017-01-01",
+//       "2018-01-01",
+//       "2019-01-01",
+//       "2020-01-01"
+//     ]
+//   },
+//   {
+//     name: "除夕",
+//     date: [
+//       "2015-02-18",
+//       "2016-02-07",
+//       "2017-01-27",
+//       "2018-02-15",
+//       "2019-02-04",
+//       "2020-01-2"
+//     ]
+//   },
+//   {
+//     name: "春节",
+//     date: [
+//       "2015-02-19",
+//       "2016-02-08",
+//       "2017-01-28",
+//       "2018-02-16",
+//       "2019-02-05",
+//       "2020-01-25"
+//     ]
+//   },
+//   {
+//     name: "元宵节",
+//     date: [
+//       "2015-03-05",
+//       "2016-02-22",
+//       "2017-02-11",
+//       "2018-03-02",
+//       "2019-02-19",
+//       "2020-02-18"
+//     ]
+//   },
+//   {
+//     name: "清明节",
+//     date: [
+//       "2015-04-05",
+//       "2016-04-04",
+//       "2017-04-04",
+//       "2018-04-05",
+//       "2019-04-05",
+//       "2020-04-04"
+//     ]
+//   },
+//   {
+//     name: "劳动节",
+//     date: [
+//       "2015-05-01",
+//       "2016-05-01",
+//       "2017-05-01",
+//       "2018-05-01",
+//       "2019-05-01",
+//       "2020-05-01"
+//     ]
+//   },
+//   {
+//     name: "端午节",
+//     date: [
+//       "2015-06-20",
+//       "2016-06-09",
+//       "2017-05-30",
+//       "2018-06-18",
+//       "2019-06-07",
+//       "2020-06-25"
+//     ]
+//   },
+//   {
+//     name: "中秋节",
+//     date: [
+//       "2015-09-27",
+//       "2016-09-15",
+//       "2017-10-04",
+//       "2018-09-24",
+//       "2019-09-13",
+//       "2020-10-01"
+//     ]
+//   },
+//   {
+//     name: "国庆节",
+//     date: [
+//       "2015-10-01",
+//       "2016-10-01",
+//       "2017-10-01",
+//       "2018-10-01",
+//       "2019-10-01",
+//       "2020-10-01"
+//     ]
+//   }
+// ];
 const util = {
   /**
    * 根据当前年月，计算下一个月的年月
@@ -339,147 +464,20 @@ const util = {
    *
    * 获得节日
    */
-  getHoliday: function(date) {
-    for (let k = 0, hlen = holidaysMap.length; k < hlen; k++) {
-      let name = holidaysMap[k]["name"],
-        dateArr = holidaysMap[k]["date"];
-      for (let j = 0, len = dateArr.length; j < len; j++) {
-        let item = dateArr[j];
-        if (date == util.dateToNum(item)) {
-          return name;
-        }
-      }
-    }
-  }
+  // getHoliday: function(date) {
+  //   for (let k = 0, hlen = holidaysMap.length; k < hlen; k++) {
+  //     let name = holidaysMap[k]["name"],
+  //       dateArr = holidaysMap[k]["date"];
+  //     for (let j = 0, len = dateArr.length; j < len; j++) {
+  //       let item = dateArr[j];
+  //       if (date == util.dateToNum(item)) {
+  //         return name;
+  //       }
+  //     }
+  //   }
+  // }
 };
-var holidaysMap = [
-  {
-    name: "", //'今天',
-    date: [util.formatDate(new Date())]
-  },
-  {
-    name: "圣诞节",
-    date: [
-      "2014-12-25",
-      "2015-12-25",
-      "2016-12-25",
-      "2017-12-25",
-      "2018-12-25",
-      "2019-12-25",
-      "2020-12-25"
-    ]
-  },
-  {
-    name: "情人节",
-    date: [
-      "2015-02-14",
-      "2016-02-14",
-      "2017-02-14",
-      "2018-02-14",
-      "2019-02-14",
-      "2020-02-14"
-    ]
-  },
-  {
-    name: "元旦",
-    date: [
-      "2015-01-01",
-      "2016-01-01",
-      "2017-01-01",
-      "2018-01-01",
-      "2019-01-01",
-      "2020-01-01"
-    ]
-  },
-  {
-    name: "除夕",
-    date: [
-      "2015-02-18",
-      "2016-02-07",
-      "2017-01-27",
-      "2018-02-15",
-      "2019-02-04",
-      "2020-01-2"
-    ]
-  },
-  {
-    name: "春节",
-    date: [
-      "2015-02-19",
-      "2016-02-08",
-      "2017-01-28",
-      "2018-02-16",
-      "2019-02-05",
-      "2020-01-25"
-    ]
-  },
-  {
-    name: "元宵节",
-    date: [
-      "2015-03-05",
-      "2016-02-22",
-      "2017-02-11",
-      "2018-03-02",
-      "2019-02-19",
-      "2020-02-18"
-    ]
-  },
-  {
-    name: "清明节",
-    date: [
-      "2015-04-05",
-      "2016-04-04",
-      "2017-04-04",
-      "2018-04-05",
-      "2019-04-05",
-      "2020-04-04"
-    ]
-  },
-  {
-    name: "劳动节",
-    date: [
-      "2015-05-01",
-      "2016-05-01",
-      "2017-05-01",
-      "2018-05-01",
-      "2019-05-01",
-      "2020-05-01"
-    ]
-  },
-  {
-    name: "端午节",
-    date: [
-      "2015-06-20",
-      "2016-06-09",
-      "2017-05-30",
-      "2018-06-18",
-      "2019-06-07",
-      "2020-06-25"
-    ]
-  },
-  {
-    name: "中秋节",
-    date: [
-      "2015-09-27",
-      "2016-09-15",
-      "2017-10-04",
-      "2018-09-24",
-      "2019-09-13",
-      "2020-10-01"
-    ]
-  },
-  {
-    name: "国庆节",
-    date: [
-      "2015-10-01",
-      "2016-10-01",
-      "2017-10-01",
-      "2018-10-01",
-      "2019-10-01",
-      "2020-10-01"
-    ]
-  }
-];
+
 export default {
   name: "Calendar",
   data() {
@@ -489,71 +487,90 @@ export default {
     this.$store.commit("changeTitle", "日期");
   },
   computed: {
-    calendarList: function() {
-      const today = this.$store.state.departureDate,
-        step = 13;
-      let now = new Date(),
-        year = now.getFullYear(),
-        month = now.getMonth() + 1,
-        minDate = util.formatDate(now),
-        maxDate = "",
-        dateToNum = util.dateToNum,
-        joinDate = util.joinDate,
-        calendarlist = [];
-      for (let i = 0; i < step; i++) {
-        let curMonth = month + i,
-          curDate = util.getNextMonthDate(year, curMonth), //获得下个月的年份和月份,
-          dateObj = {
-            title: {
-              year: curDate.year,
-              month: curDate.month
-            },
-            date: []
-          },
-          firstDay = Math.abs(
-            new Date(curDate.year, curDate.month - 1, 1).getDay()
-          ),
-          days = new Date(curDate.year, curDate.month, 0).getDate();
-        if (firstDay == 0) {
-          firstDay = 7;
-        }
-        for (let d = 0; d < firstDay - 1; d++) {
-          dateObj.date.push({
-            class: "ept",
-            date: "",
-            holiday: ""
-          });
-        }
-        for (let n = 0; n < days; n++) {
-          let day = n + 1,
-            date = joinDate(curDate.year, curDate.month, day),
-            dateNum = dateToNum(date);
-          if (
-            (minDate && dateNum < dateToNum(minDate)) ||
-            (maxDate && dateNum > dateToNum(maxDate))
-          ) {
-            dateObj.date.push({
-              class: "iv",
-              date: util.formatNum(day),
-              holiday: util.getHoliday(dateNum)
-            })
-          }else{
-            dateObj.date.push({
-              class: "jr",
-              date: util.formatNum(day),
-              holiday: util.getHoliday(dateNum)
-            })
-          }
-        }
-        calendarlist.push(dateObj);
-      }
-      return calendarlist;
-    }
-  },
-  methods:{
-    change:function(event){
-      console.log(1)
-    }
+    // calendarList: function() {
+      // const today = this.$store.state.departureDate,
+      //   step = 13;
+      // let now = new Date(),
+      //   year = now.getFullYear(),
+      //   month = now.getMonth() + 1,
+      //   // minDate = util.formatDate(now),
+      //   maxDate = "",
+      //   // dateToNum = util.dateToNum,
+      //   // joinDate = util.joinDate,
+      //   calendarlist = [
+      //     {
+      //       title: {
+      //         year: 2018,
+      //         month: "06"
+      //       },
+      //       date: [
+      //         {
+      //           class: "ept",
+      //           date: "01",
+      //           holiday: ""
+      //         },
+      //         {
+      //           class: "iv",
+      //           date: "01",
+      //           holiday: ""
+      //         },
+      //         {
+      //           class: "iv",
+      //           date: "01",
+      //           holiday: ""
+      //         }
+      //       ]
+      //     }
+      //   ];
+      // for (let i = 0; i < step; i++) {
+        // let curMonth = month + i,
+        //   curDate = util.getNextMonthDate(year, curMonth), //获得下个月的年份和月份,
+        //   dateObj = {
+        //     title: {
+        //       year: curDate.year,
+        //       month: curDate.month
+        //     },
+        //     date: []
+        //   },
+        //   firstDay = Math.abs(
+        //     new Date(curDate.year, curDate.month - 1, 1).getDay()
+        //   ),
+        //   days = new Date(curDate.year, curDate.month, 0).getDate();
+        // if (firstDay == 0) {
+        //   firstDay = 7;
+        // }
+        // for (let d = 0; d < firstDay - 1; d++) {
+        //   dateObj.date.push({
+        //     class: "ept",
+        //     date: "",
+        //     holiday: ""
+        //   });
+        // }
+        // for (let n = 0; n < days; n++) {
+        //   let day = i + 1,
+        //     date = joinDate(year, month, day),
+        //     dateNum = dateToNum(date);
+        //   if (
+        //     (minDate && dateNum < dateToNum(minDate)) ||
+        //     (maxDate && dateNum > dateToNum(maxDate))
+        //   ) {
+        //     // dateObj.date.push({
+        //     //   class: "iv",
+        //     //   date: util.formatNum(day),
+        //     //   holiday: util.getHoliday(dateNum)
+        //     // })
+        //   }else{
+        //     // dateObj.date.push({
+        //     //   class: "jr",
+        //     //   date: util.formatNum(day),
+        //     //   holiday: util.getHoliday(dateNum)
+        //     // })
+        //   }
+        // }
+      // }
+      // console.log(calendarlist)
+      // return calendarlist;
+    // }
   }
 };
 </script>
@@ -635,7 +652,7 @@ li {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      padding: 0 0.5rem 0.5rem 0.5rem;
+      padding: 0 0.5rem;
       li {
         width: calc(~"100% / 7");
         line-height: 1.35rem;

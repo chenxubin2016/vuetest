@@ -8,6 +8,9 @@
 import header from '@/components/header'
 export default {
   name: 'App',
+  created: function () {
+    this.$store.commit('setDate', '2018-06-27')
+  },
   computed: {
     title: function () {
       return this.$store.state.title

@@ -10,6 +10,9 @@ const store = new Vuex.Store({
   mutations: {
     changeTitle: function (state, value) {
       state.title = value
+    },
+    setDate: function (state, value) {
+      state.departureDate = value
     }
   },
   getters: {

@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import vueTap from 'vue2-tap'
 import myPlugins from './plugins/plugins'
 import store from './vuex/store'
 // 自己封装的组件
@@ -18,6 +19,7 @@ Vue.component(Button.name, Button)
 Vue.config.productionTip = false
 
 Vue.use(myPlugins)
+Vue.use(vueTap)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
