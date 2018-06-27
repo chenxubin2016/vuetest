@@ -4,6 +4,7 @@ import first from '@/components/first'
 import second from '@/components/second'
 import three from '@/components/three'
 import four from '@/components/four'
+import Calendar from '@/components/calendar/calendar'
 
 Vue.use(Router)
 
@@ -11,7 +12,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/first',
       name: 'First',
       component: first
     },
@@ -29,6 +30,11 @@ export default new Router({
       path: '/four',
       name: 'Four',
       component: four
+    },
+    {
+      path: '/',
+      name: 'Calendar',
+      component: Calendar
     },
     {
       path: '*',

@@ -6,8 +6,8 @@ import router from './router'
 import myPlugins from './plugins/plugins'
 import store from './vuex/store'
 // 自己封装的组件
-// import toast from './components/toast/toast.js'
 // ui组件
+import './assets/less/style.less'
 import 'mint-ui/lib/style.css'
 import { Header, Button } from 'mint-ui'
 
@@ -15,7 +15,6 @@ import { Header, Button } from 'mint-ui'
 Vue.component(Header.name, Header)
 Vue.component(Button.name, Button)
 // 全局挂载
-// Vue.prototype.aa = toast
 Vue.config.productionTip = false
 
 Vue.use(myPlugins)
