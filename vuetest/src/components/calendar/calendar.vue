@@ -1,11 +1,11 @@
 <template>
   <div class="content">
     <ul class="data-tab">
-      <li class="active">
+      <li :class="{'active':depart}" v-tap="{methods:toggleTab}">
         <div class="tab-title">出发日期</div>
         <div class="tab-data">2月17日2017年</div>
       </li>
-      <li>
+      <li :class="{'active':!depart}" v-tap="{methods:toggleTab}">
         <div class="tab-title">返回日期</div>
         <div class="tab-data">2月20日2017年</div>
       </li>
@@ -27,15 +27,11 @@
           <small>{{item.title.year}}年</small>
         </h3>
         <ul class="calendar-data-list">
-          <li class="ept" v-for="d in item.date" v-if="d.class==='ept'">
+          <li :class="d.class" v-for="d in item.date" v-if="d.class==='jr'" :data-date="d.dateStr" v-tap="{methods:change} ">
             <i class="date">{{d.date}}</i>
             <i class="holiday">{{d.holiday}}</i>
           </li>
-          <li class="iv" v-else-if="d.class==='iv'">
-            <i class="date">{{d.date}}</i>
-            <i class="holiday">{{d.holiday}}</i>
-          </li>
-          <li class="jr" v-else="d.class==='jr'" @click="change">
+          <li :class="d.class" v-else :data-date="d.dateStr">
             <i class="date">{{d.date}}</i>
             <i class="holiday">{{d.holiday}}</i>
           </li>
@@ -350,6 +346,14 @@ const util = {
         }
       }
     }
+  },
+  // 获取元素
+  querySelect: function(str, attr) {
+    if (!document.querySelector(str)) {
+      return null;
+    } else {
+      return document.querySelector(str)[0].getAttribute(attr);
+    }
   }
 };
 var holidaysMap = [
@@ -483,15 +487,21 @@ var holidaysMap = [
 export default {
   name: "Calendar",
   data() {
-    return {};
+    return {
+      //出发标志
+      depart: true,
+      // 入住标志
+      checkIn: true,
+      calendarlist: ""
+    };
   },
   created: function() {
     this.$store.commit("changeTitle", "日期");
   },
   computed: {
     calendarList: function() {
-      const today = this.$store.state.departureDate,
-        step = 13;
+      const step = 13;
+      // 获取当前日期并生成未来一年的日期数据
       let now = new Date(),
         year = now.getFullYear(),
         month = now.getMonth() + 1,
@@ -506,7 +516,7 @@ export default {
           dateObj = {
             title: {
               year: curDate.year,
-              month: curDate.month
+              month: util.formatNum(curDate.month)
             },
             date: []
           },
@@ -514,14 +524,12 @@ export default {
             new Date(curDate.year, curDate.month - 1, 1).getDay()
           ),
           days = new Date(curDate.year, curDate.month, 0).getDate();
-        if (firstDay == 0) {
-          firstDay = 7;
-        }
-        for (let d = 0; d < firstDay - 1; d++) {
+        for (let d = 0; d < firstDay; d++) {
           dateObj.date.push({
             class: "ept",
             date: "",
-            holiday: ""
+            holiday: "",
+            dateStr: ""
           });
         }
         for (let n = 0; n < days; n++) {
@@ -535,24 +543,148 @@ export default {
             dateObj.date.push({
               class: "iv",
               date: util.formatNum(day),
-              holiday: util.getHoliday(dateNum)
-            })
-          }else{
+              holiday: util.getHoliday(dateNum),
+              dateStr:
+                curDate.year +
+                "-" +
+                util.formatNum(curDate.month) +
+                "-" +
+                util.formatNum(day)
+            });
+          } else {
             dateObj.date.push({
               class: "jr",
               date: util.formatNum(day),
-              holiday: util.getHoliday(dateNum)
-            })
+              holiday: util.getHoliday(dateNum),
+              dateStr:
+                curDate.year +
+                "-" +
+                util.formatNum(curDate.month) +
+                "-" +
+                util.formatNum(day)
+            });
           }
         }
         calendarlist.push(dateObj);
       }
-      return calendarlist;
+      this.calendarlist = this.calendarlist || calendarlist;
+      return this.calendarlist ? this.calendarlist : calendarlist;
     }
   },
-  methods:{
-    change:function(event){
-      console.log(1)
+  methods: {
+    //选择日期
+    change: function($event) {
+      let departDate = document
+          .getElementsByClassName("select-s")[0]
+          .getAttribute("data-date"),
+        nowDate = $event.event.currentTarget.dataset.date,
+        returnDate = document
+          .getElementsByClassName("select-e")[0]
+          .getAttribute("data-date"),
+        calendarList = this.calendarlist;
+      console.log(departDate);
+      console.log(nowDate);
+      console.log(returnDate);
+      // 出发/入住
+      if (this.depart) {
+        if (!departDate && !returnDate) {
+          for (let i = 0; i < calendarList.length; i++) {
+            let date = calendarList[i].date;
+            for (let i = 0; i < date.length; i++) {
+              if (date[i].dateStr === nowDate) {
+                date[i] = Object.assign(date[i], {
+                  class: "jr select-s",
+                  holiday: "出发"
+                });
+              } else {
+                date[i] = Object.assign(date[i], {
+                  class: date[i].class.replace(/ select-s/g, ""),
+                  holiday: ""
+                });
+              }
+            }
+          }
+        } else if (nowDate > returnDate) {
+          for (let i = 0; i < calendarList.length; i++) {
+            let date = calendarList[i].date;
+            for (let i = 0; i < date.length; i++) {
+              var a, b;
+              if (date[i].dateStr === nowDate) {
+                date[i] = Object.assign(date[i], {
+                  class: "jr select-s",
+                  holiday: "出发"
+                });
+                date[i + 2] = Object.assign(date[i + 2], {
+                  class: "jr select-e",
+                  holiday: "返回"
+                });
+                a = i;
+                b = i + 2;
+                for(let i=a+1;i<b;i++ ){
+                  date[i] = Object.assign(date[i], {
+                    class: "jr select",
+                    holiday: ""
+                  });
+                }
+                
+              } else {
+                console.log(a,b)
+                if (i != a && i != b) {
+                  date[i] = Object.assign(date[i], {
+                    class: date[i].class.replace(/ select-s/g, ""),
+                    holiday: ""
+                  });
+                  date[i] = Object.assign(date[i], {
+                    class: date[i].class.replace(/ select-e/g, ""),
+                    holiday: ""
+                  });
+                  for(let i=0;i<a;i++ ){
+                    date[i] = Object.assign(date[i], {
+                      class: date[i].class.replace(/ select/g, ""),
+                      holiday: ""
+                    });
+                  }
+                  for(let j=b+1;j<i;j++ ){
+                    date[j] = Object.assign(date[j], {
+                      class: date[j].class.replace(/ select/g, ""),
+                      holiday: ""
+                    });
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        if (!departDate && !returnDate) {
+          for (let i = 0; i < calendarList.length; i++) {
+            let date = calendarList[i].date;
+            for (let i = 0; i < date.length; i++) {
+              if (date[i].dateStr === nowDate) {
+                date[i] = Object.assign(date[i], {
+                  class: "jr select-e",
+                  holiday: "返回"
+                });
+              } else {
+                date[i] = Object.assign(date[i], {
+                  class: date[i].class.replace(/ select-e/g, ""),
+                  holiday: ""
+                });
+              }
+            }
+          }
+        } else if (nowDate < departDate) {
+          alert("返回日期不能早于出发日期！");
+        }
+      }
+      this.calendarlist = calendarList;
+    },
+    //切换返回日期
+    toggleTab: function($event) {
+      if ($event.event.currentTarget.className != "active") {
+        this.depart = !this.depart;
+      }
+      console.log(this.depart);
     }
   }
 };

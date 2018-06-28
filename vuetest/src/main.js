@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import vueTap from 'vue2-tap'
+import vueTap from 'v-tap'
 import myPlugins from './plugins/plugins'
 import store from './vuex/store'
 // 自己封装的组件
