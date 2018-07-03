@@ -21,7 +21,7 @@ export default {
 }
 </script>
 <style lang='less'>
-  .header{
+  .mint-header.header{
     height: 2.2rem;
     background-color: #f4f4f4;
     display: flex;

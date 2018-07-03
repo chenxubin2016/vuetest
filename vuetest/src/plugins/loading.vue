@@ -17,6 +17,10 @@ export default {
     text: {
       type: String,
       default: '正在加载中...'
+    },
+    src:{
+      type:String,
+      default:'./loading.gif'
     }
   },
   creaded: function () {

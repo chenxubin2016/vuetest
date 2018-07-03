@@ -8,8 +8,8 @@ import myPlugins from './plugins/plugins'
 import store from './vuex/store'
 // 自己封装的组件
 // ui组件
-import './assets/less/style.less'
 import 'mint-ui/lib/style.css'
+import './assets/less/style.less'
 import { Header, Button } from 'mint-ui'
 
 // 组件挂载

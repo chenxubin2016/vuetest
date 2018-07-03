@@ -46,9 +46,10 @@ const loadingPlugins = {
     $vm.show = false
 
     let loading = {
-      show (text) {
+      show (text,src) {
         $vm.show = true
         $vm.text = text || '正在加载中...'
+        $vm.src = src || ''
       },
       hide () {
         $vm.show = false

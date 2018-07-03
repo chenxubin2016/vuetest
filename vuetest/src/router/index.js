@@ -9,10 +9,12 @@ import Calendar from '@/components/calendar/calendar'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  
+  // mode: 'history',
+  // base: '/dist/',
   routes: [
     {
-      path: '/first',
+      path: '/',
       name: 'First',
       component: first
     },
@@ -32,13 +34,13 @@ export default new Router({
       component: four
     },
     {
-      path: '/',
+      path: '/calendar',
       name: 'Calendar',
       component: Calendar
     },
     {
       path: '*',
-      redirect: '/'
+      redirect: '/first'
     }
   ]
 })
