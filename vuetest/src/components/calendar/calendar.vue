@@ -27,7 +27,7 @@
           <small>{{item.title.year}}年</small>
         </h3>
         <ul class="calendar-data-list">
-          <li :class="d.class" v-for="d in item.date" v-if="d.class==='jr'" :data-date="d.dateStr" v-tap="{methods:change} ">
+          <li :class="d.class" v-for="d in item.date" v-if="d.class==='jr'" :data-date="d.dateStr" v-tap="{methods:changeDate} ">
             <i class="date">{{d.date}}</i>
             <i class="holiday">{{d.holiday}}</i>
           </li>
@@ -37,7 +37,7 @@
           </li>
         </ul>
       </li>
-      <li>
+      <!-- <li>
         <h3>2月
           <small>2017年</small>
         </h3>
@@ -238,7 +238,7 @@
             <i class="holiday"></i>
           </li>
         </ul>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
@@ -354,8 +354,17 @@ const util = {
     } else {
       return document.querySelector(str)[0].getAttribute(attr);
     }
+  },
+  //根据传入的日期获得返回日期
+  getReturnDate:function (dateObj){
+    var year = dateObj.getFullYear(),
+        month = dateObj.getMonth() +1,
+        day = dateObj.getDate()+2;
+    return util.joinDate(year, month, day);
   }
+
 };
+// 节日
 var holidaysMap = [
   {
     name: "", //'今天',
@@ -488,42 +497,50 @@ export default {
   name: "Calendar",
   data() {
     return {
-      //出发标志
+      // 出发标志
       depart: true,
       // 入住标志
       checkIn: true,
+      // 日历数据
       calendarlist: ""
     };
   },
   created: function() {
+    //设置header标题
     this.$store.commit("changeTitle", "日期");
+    this.$store.commit("changeCalendar",{
+      title:'rl',
+      flag:true,
+      dateList:['2018-07-22','2018-07-29']
+    });
   },
   computed: {
     calendarList: function() {
-      const step = 13;
       // 获取当前日期并生成未来一年的日期数据
+
+      const step = 13,
+            calendarMsg=this.$store.state.defaultMsg;
       let now = new Date(),
-        year = now.getFullYear(),
-        month = now.getMonth() + 1,
-        minDate = util.formatDate(now),
-        maxDate = "",
-        dateToNum = util.dateToNum,
-        joinDate = util.joinDate,
-        calendarlist = [];
-      for (let i = 0; i < step; i++) {
+          year = now.getFullYear(),
+          month = now.getMonth() + 1,
+          minDate = util.formatDate(now), 
+          maxDate = "",
+          dateToNum = util.dateToNum,
+          joinDate = util.joinDate,
+          calendarlist = [];
+      for(let i=0; i<step; i++){
         let curMonth = month + i,
-          curDate = util.getNextMonthDate(year, curMonth), //获得下个月的年份和月份,
-          dateObj = {
-            title: {
-              year: curDate.year,
-              month: util.formatNum(curDate.month)
+            curDate = util.getNextMonthDate(year, curMonth), //获得下个月的年份和月份,
+            dateObj = {
+              title: {
+                year: curDate.year,
+                month: util.formatNum(curDate.month)
+              },
+              date: []
             },
-            date: []
-          },
-          firstDay = Math.abs(
-            new Date(curDate.year, curDate.month - 1, 1).getDay()
-          ),
-          days = new Date(curDate.year, curDate.month, 0).getDate();
+            firstDay = Math.abs(new Date(curDate.year, curDate.month - 1, 1).getDay()),
+            days = new Date(curDate.year, curDate.month, 0).getDate();
+        // 根据星期几设置添加几个空li
         for (let d = 0; d < firstDay; d++) {
           dateObj.date.push({
             class: "ept",
@@ -532,10 +549,11 @@ export default {
             dateStr: ""
           });
         }
-        for (let n = 0; n < days; n++) {
+        for(let n=0; n<days; n++){
           let day = n + 1,
             date = joinDate(curDate.year, curDate.month, day),
             dateNum = dateToNum(date);
+          //设置置灰日期
           if (
             (minDate && dateNum < dateToNum(minDate)) ||
             (maxDate && dateNum > dateToNum(maxDate))
@@ -551,133 +569,140 @@ export default {
                 "-" +
                 util.formatNum(day)
             });
-          } else {
-            dateObj.date.push({
-              class: "jr",
+          };
+          if(calendarMsg.title=='wf'){
+            // 出发日期样式
+            if(calendarMsg.dateList[0]==(curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day))){
+              dateObj.date.push({
+              class: "select-s",
               date: util.formatNum(day),
-              holiday: util.getHoliday(dateNum),
+              holiday: '出发',
               dateStr:
                 curDate.year +
                 "-" +
                 util.formatNum(curDate.month) +
                 "-" +
                 util.formatNum(day)
-            });
-          }
+              });
+            }else
+            // 返回日期样式
+            if(calendarMsg.dateList[1]==(curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day))){
+              dateObj.date.push({
+              class: "select-e",
+              date: util.formatNum(day),
+              holiday: '返回',
+              dateStr:
+                curDate.year +
+                "-" +
+                util.formatNum(curDate.month) +
+                "-" +
+                util.formatNum(day)
+              });
+            }else
+            //大于出发日期小于返回日期
+            if(calendarMsg.dateList[0]<(curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day)) && (curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day))<calendarMsg.dateList[1]){
+              dateObj.date.push({
+                class: "select",
+                date: util.formatNum(day),
+                holiday: '',
+                dateStr:
+                  curDate.year +
+                  "-" +
+                  util.formatNum(curDate.month) +
+                  "-" +
+                  util.formatNum(day)
+              })
+            }else {
+              dateObj.date.push({
+                class: "jr",
+                date: util.formatNum(day),
+                holiday: util.getHoliday(dateNum),
+                dateStr:
+                  curDate.year +
+                  "-" +
+                  util.formatNum(curDate.month) +
+                  "-" +
+                  util.formatNum(day)
+              });
+            }
+          }else if(calendarMsg.title=='rl'){
+            // 出发日期样式
+            if(calendarMsg.dateList[0]==(curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day))){
+                  dateObj.date.push({
+                  class: "select-s",
+                  date: util.formatNum(day),
+                  holiday: '入',
+                  dateStr:
+                    curDate.year +
+                    "-" +
+                    util.formatNum(curDate.month) +
+                    "-" +
+                    util.formatNum(day)
+                });
+            }else 
+            // 返回日期样式
+            if(calendarMsg.dateList[1]==(curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day))){
+                  dateObj.date.push({
+                  class: "select-e",
+                  date: util.formatNum(day),
+                  holiday: '离',
+                  dateStr:
+                    curDate.year +
+                    "-" +
+                    util.formatNum(curDate.month) +
+                    "-" +
+                    util.formatNum(day)
+                });
+            }else if(calendarMsg.dateList[0]<(curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day)) && (curDate.year + "-" + util.formatNum(curDate.month) + "-" + util.formatNum(day))<calendarMsg.dateList[1]){
+              dateObj.date.push({
+                class: "select",
+                date: util.formatNum(day),
+                holiday: '',
+                dateStr:
+                  curDate.year +
+                  "-" +
+                  util.formatNum(curDate.month) +
+                  "-" +
+                  util.formatNum(day)
+              })
+            }else {
+              dateObj.date.push({
+                class: "jr",
+                date: util.formatNum(day),
+                holiday: util.getHoliday(dateNum),
+                dateStr:
+                  curDate.year +
+                  "-" +
+                  util.formatNum(curDate.month) +
+                  "-" +
+                  util.formatNum(day)
+              });
+            }
+          } 
         }
         calendarlist.push(dateObj);
       }
       this.calendarlist = this.calendarlist || calendarlist;
+      // // console.log(this.calendarlist)
       return this.calendarlist ? this.calendarlist : calendarlist;
     }
   },
   methods: {
     //选择日期
-    change: function($event) {
-      let departDate = document
-          .getElementsByClassName("select-s")[0]
-          .getAttribute("data-date"),
-        nowDate = $event.event.currentTarget.dataset.date,
-        returnDate = document
-          .getElementsByClassName("select-e")[0]
-          .getAttribute("data-date"),
-        calendarList = this.calendarlist;
-      console.log(departDate);
-      console.log(nowDate);
-      console.log(returnDate);
-      // 出发/入住
-      if (this.depart) {
-        if (!departDate && !returnDate) {
-          for (let i = 0; i < calendarList.length; i++) {
-            let date = calendarList[i].date;
-            for (let i = 0; i < date.length; i++) {
-              if (date[i].dateStr === nowDate) {
-                date[i] = Object.assign(date[i], {
-                  class: "jr select-s",
-                  holiday: "出发"
-                });
-              } else {
-                date[i] = Object.assign(date[i], {
-                  class: date[i].class.replace(/ select-s/g, ""),
-                  holiday: ""
-                });
-              }
-            }
+    changeDate: function($event) {
+      // console.log($event)
+      var targetDate = $event.event.currentTarget.dataset.date,
+          today = util.formatDate(new Date()),
+          firstDate=document.getElementsByClassName('select-s')[0].getAttribute('data-date'),
+          secondDate=document.getElementsByClassName('select-e')[0].getAttribute('data-date');
+          if(targetDate<firstDate && targetDate>= today){
+            this.$store.commit("changeCalendar",{
+              title:'rl',
+              flag:true,
+              dateList:[targetDate,secondDate]
+            });
           }
-        } else if (nowDate > returnDate) {
-          for (let i = 0; i < calendarList.length; i++) {
-            let date = calendarList[i].date;
-            for (let i = 0; i < date.length; i++) {
-              var a, b;
-              if (date[i].dateStr === nowDate) {
-                date[i] = Object.assign(date[i], {
-                  class: "jr select-s",
-                  holiday: "出发"
-                });
-                date[i + 2] = Object.assign(date[i + 2], {
-                  class: "jr select-e",
-                  holiday: "返回"
-                });
-                a = i;
-                b = i + 2;
-                for(let i=a+1;i<b;i++ ){
-                  date[i] = Object.assign(date[i], {
-                    class: "jr select",
-                    holiday: ""
-                  });
-                }
-                
-              } else {
-                console.log(a,b)
-                if (i != a && i != b) {
-                  date[i] = Object.assign(date[i], {
-                    class: date[i].class.replace(/ select-s/g, ""),
-                    holiday: ""
-                  });
-                  date[i] = Object.assign(date[i], {
-                    class: date[i].class.replace(/ select-e/g, ""),
-                    holiday: ""
-                  });
-                  for(let i=0;i<a;i++ ){
-                    date[i] = Object.assign(date[i], {
-                      class: date[i].class.replace(/ select/g, ""),
-                      holiday: ""
-                    });
-                  }
-                  for(let j=b+1;j<i;j++ ){
-                    date[j] = Object.assign(date[j], {
-                      class: date[j].class.replace(/ select/g, ""),
-                      holiday: ""
-                    });
-                  }
-                }
-              }
-            }
-          }
-        }
-      } else {
-        if (!departDate && !returnDate) {
-          for (let i = 0; i < calendarList.length; i++) {
-            let date = calendarList[i].date;
-            for (let i = 0; i < date.length; i++) {
-              if (date[i].dateStr === nowDate) {
-                date[i] = Object.assign(date[i], {
-                  class: "jr select-e",
-                  holiday: "返回"
-                });
-              } else {
-                date[i] = Object.assign(date[i], {
-                  class: date[i].class.replace(/ select-e/g, ""),
-                  holiday: ""
-                });
-              }
-            }
-          }
-        } else if (nowDate < departDate) {
-          alert("返回日期不能早于出发日期！");
-        }
-      }
-      this.calendarlist = calendarList;
+          console.log(targetDate)
     },
     //切换返回日期
     toggleTab: function($event) {

@@ -14,7 +14,7 @@ export default new Router({
   // base: '/dist/',
   routes: [
     {
-      path: '/',
+      path: '/first',
       name: 'First',
       component: first
     },
@@ -34,7 +34,7 @@ export default new Router({
       component: four
     },
     {
-      path: '/calendar',
+      path: '/',
       name: 'Calendar',
       component: Calendar
     },

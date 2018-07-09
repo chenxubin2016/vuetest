@@ -5,7 +5,14 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    title: ''
+    title: '',
+    //日历数据
+    defaultMsg:{
+      title:'rl',
+      flag:true,
+      // dateList:[util.formatDate(new Date()),util.getReturnDate(new Date())]
+      dateList:['2018-07-22','2018-07-29']
+    }
   },
   mutations: {
     changeTitle: function (state, value) {
@@ -13,6 +20,10 @@ const store = new Vuex.Store({
     },
     setDate: function (state, value) {
       state.departureDate = value
+    },
+    //日历数据变更
+    changeCalendar:function (state,options){
+      state.defaultMsg=options;
     }
   },
   getters: {
