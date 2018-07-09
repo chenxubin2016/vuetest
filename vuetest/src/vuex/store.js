@@ -8,7 +8,7 @@ const store = new Vuex.Store({
     title: '',
     //日历数据
     defaultMsg:{
-      title:'rl',
+      title:'wf',
       flag:true,
       // dateList:[util.formatDate(new Date()),util.getReturnDate(new Date())]
       dateList:['2018-07-22','2018-07-29']
