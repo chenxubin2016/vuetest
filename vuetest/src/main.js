@@ -6,6 +6,7 @@ import router from './router'
 import vueTap from 'v-tap'
 import myPlugins from './plugins/plugins'
 import store from './vuex/store'
+import {post} from '@/assets/js/request.js'
 // 自己封装的组件
 // ui组件
 import 'mint-ui/lib/style.css'
@@ -20,6 +21,7 @@ Vue.config.productionTip = false
 
 Vue.use(myPlugins)
 Vue.use(vueTap)
+Vue.prototype.$post=post;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

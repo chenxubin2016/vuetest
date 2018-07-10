@@ -6,32 +6,35 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      msg: '第一页'
-    }
+      msg: "第一页"
+    };
   },
-  created: function () {
-    this.$store.commit('changeHeaderState',{
-      title:'首页',
-      left:{
-        flag:true,
-        options:{
-          name:'First'
+  created: function() {
+    this.$store.commit("changeHeaderState", {
+      title: "首页",
+      left: {
+        flag: true,
+        options: {
+          name: "First"
         }
       },
-      right:{
-        isShow:false
+      right: {
+        isShow: false
       }
     });
   },
   computed: {},
   methods: {
-    linkto: function () {
-      this.$router.replace({name: 'Second'})
+    linkto: function() {
+      this.$post(1001,{}).then(response=>{
+        console.log(response)
+      })
+      // this.$router.replace({ name: "Second" });
     }
   }
-}
+};
 </script>
 <style>
 .firstPage {
