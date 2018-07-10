@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <headers :header-title= 'title'></headers>
+    <headers :headerMsg='headerMsg' v-on:back='returnPage'></headers>
     <router-view></router-view>
   </div>
 </template>
@@ -12,12 +12,23 @@ export default {
     this.$store.commit('setDate', '2018-06-27')
   },
   computed: {
-    title: function () {
-      return this.$store.state.title
+    headerMsg: function () {
+      return this.$store.state.routerConfig
     }
   },
   components: {
     headers: header
+  },
+  methods:{
+    // 根据routerConfig的配置区分是否将页面记录追加到window.history
+    returnPage:function (){
+      var routerconfig=this.$store.state.routerConfig;
+      if(routerconfig.left.flag){
+        this.$router.replace(routerconfig.left.options);
+      }else{
+        this.$router.go(-1);
+      }
+    }
   }
 }
 </script>

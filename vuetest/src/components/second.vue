@@ -15,7 +15,18 @@ export default {
     }
   },
   created: function () {
-    this.$store.commit('changeTitle', '我是第二页')
+    this.$store.commit('changeHeaderState',{
+      title:'我是第二页',
+      left:{
+        flag:true,
+        options:{
+          name:'First'
+        }
+      },
+      right:{
+        isShow:false
+      }
+    });
   },
   methods: {
     showLoading: function () {
@@ -29,6 +40,6 @@ export default {
 </script>
 <style>
   .firstPage {
-      text-align: center
+    text-align: center
   }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <mt-header :title='headerTitle' class="header">
+    <mt-header :title='headerMsg.title' class="header">
       <mt-button icon="back" @click.stop="linkTo" slot="left"></mt-button>
-      <mt-button icon="more" slot="right"></mt-button>
+      <mt-button icon="more" slot="right" v-show="headerMsg.right.isShow"></mt-button>
     </mt-header>
   </div>
 </template>
@@ -11,11 +11,14 @@
 export default {
   name: 'header-component',
   props: {
-    headerTitle: String
+    headerMsg: Object
+  },
+  created:function(){
   },
   methods: {
     linkTo: function () {
-      this.$router.replace({name: 'returnTag'})
+        this.$emit('back');
+      // this.$router.replace({name: 'returnTag'})
     }
   }
 }

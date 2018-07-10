@@ -1,13 +1,13 @@
 <template>
   <div class="content">
     <ul class="data-tab">
-      <li :class="{'active':depart}" v-tap="{methods:toggleTab}">
-        <div class="tab-title">出发日期</div>
-        <div class="tab-data">2月17日2017年</div>
+      <li :class="{'active':tabTitleState}" v-tap="{methods:toggleTab}">
+        <div class="tab-title">{{tabMsg.depart.title}}</div>
+        <div class="tab-data">{{tabMsg.depart.date}}</div>
       </li>
-      <li :class="{'active':!depart}" v-tap="{methods:toggleTab}">
-        <div class="tab-title">返回日期</div>
-        <div class="tab-data">2月20日2017年</div>
+      <li :class="{'active':!tabTitleState}" v-tap="{methods:toggleTab}">
+        <div class="tab-title">{{tabMsg.return.title}}</div>
+        <div class="tab-data">{{tabMsg.return.date}}</div>
       </li>
     </ul>
 
@@ -20,7 +20,6 @@
       <li>五</li>
       <li>六</li>
     </ul>
-
     <ul class="calendar-list">
       <li v-for="item in calendarList">
         <h3>{{item.title.month}}月
@@ -37,208 +36,6 @@
           </li>
         </ul>
       </li>
-      <!-- <li>
-        <h3>2月
-          <small>2017年</small>
-        </h3>
-        <ul class="calendar-data-list">
-          <li class="ept">
-            <i class="date"></i>
-            <i class="holiday"></i>
-          </li>
-          <li class="ept">
-            <i class="date"></i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday">端午节</i>
-          </li>
-          <li class="jr select-s">
-            <i class="date">18</i>
-            <i class="holiday">端午节</i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <h3>2月
-          <small>2017年</small>
-        </h3>
-        <ul class="calendar-data-list">
-          <li class="ept">
-            <i class="date"></i>
-            <i class="holiday"></i>
-          </li>
-          <li class="ept">
-            <i class="date"></i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="iv">
-            <i class="date">18</i>
-            <i class="holiday">端午节</i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr select select-e">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-          <li class="jr">
-            <i class="date">18</i>
-            <i class="holiday"></i>
-          </li>
-        </ul>
-      </li> -->
     </ul>
   </div>
 </template>
@@ -371,7 +168,7 @@ const util = {
     var year = dateObj.getFullYear(),
         month = dateObj.getMonth() +1,
         day = dateObj.getDate()-2;
-    if(day<0){
+    if(day<=0){
       if(util.dateToNum(new Date(year, month-1, new Date(year,month-1,0).getDate()+day)) <= util.dateToNum(util.formatDate(new Date()))){
         return util.formatDate(new Date());
       }else{
@@ -385,7 +182,6 @@ const util = {
       }
     }
   }
-
 };
 // 节日
 var holidaysMap = [
@@ -520,25 +316,34 @@ export default {
   name: "Calendar",
   data() {
     return {
-      // 出发标志
-      depart: true,
-      // 入住标志
-      checkIn: true,
+
     };
   },
   created: function() {
-    //设置header标题
-    this.$store.commit("changeTitle", "日期");
+    //设置header信息
+    this.$store.commit('changeHeaderState',{
+      title:'日期',
+      left:{
+        flag:true,
+        options:{
+          name:'First'
+        }
+      },
+      right:{
+        isShow:false
+      }
+    });
+    //设置日历初始信息
     this.$store.commit("changeCalendar",{
       title:'wf',
       flag:true,
-      dateList:['2018-07-22','2018-07-29']
+      dateList:['2018-07-10','2018-07-12']
     });
   },
   computed: {
+    // 生成日历
     calendarList: function() {
       // 获取当前日期并生成未来一年的日期数据
-
       const step = 13,
             calendarMsg=this.$store.state.defaultMsg;
       let now = new Date(),
@@ -732,12 +537,44 @@ export default {
         calendarlist.push(dateObj);
       }
       return calendarlist;
+    },
+    // tab 切换状态
+    tabTitleState:function(){
+      return this.$store.state.defaultMsg.flag;
+    },
+    //tab 信息更新
+    tabMsg:function(){
+      var tabMassage=this.$store.state.defaultMsg,
+          departDateArr=tabMassage.dateList[0].split('-'),
+          returnDateArr=tabMassage.dateList[1].split('-');
+      if(tabMassage.title=='wf'){
+        return {
+          depart:{
+            title:'出发日期',
+            date:departDateArr[1]+'月'+departDateArr[2]+'日'+departDateArr[0]+'年'
+          },
+          return:{
+            title:'返回日期',
+            date:returnDateArr[1]+'月'+returnDateArr[2]+'日'+returnDateArr[0]+'年'
+          }
+        }
+      }else{
+        return {
+          depart:{
+            title:'入住日期',
+            date:departDateArr[1]+'月'+departDateArr[2]+'日'+departDateArr[0]+'年'
+          },
+          return:{
+            title:'离店日期',
+            date:returnDateArr[1]+'月'+returnDateArr[2]+'日'+returnDateArr[0]+'年'
+          }
+        }
+      }
     }
   },
   methods: {
     //选择日期
     changeDate: function($event) {
-
       var targetDate = $event.event.currentTarget.dataset.date,
           today = util.formatDate(new Date()),
           firstDate=document.getElementsByClassName('select-s')[0].getAttribute('data-date'),
@@ -749,13 +586,11 @@ export default {
             if(calendarMsg.flag){
               if(targetDate<firstDate && targetDate>= today || firstDate<=targetDate && targetDate<=secondDate){
                 this.$store.commit("changeCalendar",{
-                  title:'wf',
                   flag:false,
                   dateList:[targetDate,secondDate]
                 });
               }else{
                 this.$store.commit("changeCalendar",{
-                  title:'wf',
                   flag:false,
                   dateList:[targetDate,util.getReturnDate(new Date(targetDate.replace(/-/g,'/')))]
                 });
@@ -763,28 +598,61 @@ export default {
             }else{
               if(targetDate<secondDate && targetDate>= firstDate || targetDate>=secondDate){
                 this.$store.commit("changeCalendar",{
-                  title:'wf',
                   flag:false,
                   dateList:[firstDate,targetDate]
                 });
               }else if(today<=targetDate && targetDate<=firstDate){
                 this.$store.commit("changeCalendar",{
-                  title:'wf',
+                  flag:false,
+                  dateList:[util.getDepartDate(new Date(targetDate.replace(/-/g,'/'))),targetDate]
+                });
+              }
+            }
+          }else{
+            if(calendarMsg.flag){
+              if(targetDate<firstDate && targetDate>= today || firstDate<=targetDate && targetDate<=secondDate){
+                this.$store.commit("changeCalendar",{
+                  flag:false,
+                  dateList:[targetDate,secondDate]
+                });
+              }else{
+                this.$store.commit("changeCalendar",{
+                  flag:false,
+                  dateList:[targetDate,util.getReturnDate(new Date(targetDate.replace(/-/g,'/')))]
+                });
+              }
+            }else{
+              if(targetDate<secondDate && targetDate>= firstDate || targetDate>=secondDate){
+                this.$store.commit("changeCalendar",{
+                  flag:false,
+                  dateList:[firstDate,targetDate]
+                });
+              }else if(today<=targetDate && targetDate<=firstDate){
+                this.$store.commit("changeCalendar",{
                   flag:false,
                   dateList:[util.getDepartDate(new Date(targetDate.replace(/-/g,'/'))),targetDate]
                 });
               }
             }
           }
-          
-          console.log(calendarMsg)
+          // console.log(calendarMsg)
     },
     //切换返回日期
     toggleTab: function($event) {
-      if ($event.event.currentTarget.className != "active") {
-        this.depart = !this.depart;
+      var calendarMsg=this.$store.state.defaultMsg;
+      if(calendarMsg.title=='wf'){
+        if ($event.event.currentTarget.className != "active") {
+          this.$store.commit("changeCalendar",{
+            flag:!calendarMsg.flag,
+          });
+        }
+      }else{
+        if ($event.event.currentTarget.className != "active") {
+          this.$store.commit("changeCalendar",{
+            flag:!calendarMsg.flag,
+          });
+        }
       }
-      console.log(this.depart);
     }
   }
 };

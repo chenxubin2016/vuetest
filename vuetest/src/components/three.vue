@@ -14,7 +14,18 @@ export default {
     }
   },
   created: function () {
-    this.$store.commit('changeTitle', '第三页')
+    this.$store.commit('changeHeaderState',{
+      title:'第三页',
+      left:{
+        flag:true,
+        options:{
+          name:'First'
+        }
+      },
+      right:{
+        isShow:false
+      }
+    });
   }
 }
 </script>
